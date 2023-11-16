@@ -8,6 +8,8 @@ spring:
         driver-class-name: ${spring.datasource.driver-class-name}
         username: ${spring.datasource.username}
         password: ${spring.datasource.password}
+        hikari:
+            max-lifetime: 1800000
 server:
     port: 8080
 mybatis:

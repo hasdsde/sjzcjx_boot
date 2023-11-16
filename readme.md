@@ -7,3 +7,5 @@ Swagger
 JWT
 huTools
 
+SWAGGER URL：http://localhost:8080/swagger-ui.html
+测试 URL:http://localhost:8080/test/ping

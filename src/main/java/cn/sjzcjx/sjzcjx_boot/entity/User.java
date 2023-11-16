@@ -1,10 +1,10 @@
 package cn.sjzcjx.sjzcjx_boot.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -21,10 +21,13 @@ import java.time.LocalDateTime;
 @Setter
 @ApiModel(value = "User对象", description = "用户")
 @AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @TableId(type = IdType.AUTO)
     private Integer id;
 
     @ApiModelProperty("用户唯一id")
