@@ -31,6 +31,7 @@ public class Log implements Serializable {
     private Integer id;
 
     @ApiModelProperty("类型1访问2下载")
+    //类型1访问2下载
     private Integer type;
 
     private Integer resourceId;

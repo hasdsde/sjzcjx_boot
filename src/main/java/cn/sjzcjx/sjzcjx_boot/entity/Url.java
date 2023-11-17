@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
@@ -23,6 +24,7 @@ import java.time.LocalDateTime;
 @Setter
 @ApiModel(value = "Url对象", description = "资源URL")
 @AllArgsConstructor
+@NoArgsConstructor
 public class Url implements Serializable {
 
     private static final long serialVersionUID = 1L;

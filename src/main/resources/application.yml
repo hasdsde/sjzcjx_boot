@@ -9,11 +9,15 @@ spring:
         username: ${spring.datasource.username}
         password: ${spring.datasource.password}
         hikari:
-            max-lifetime: 1800000
+            max-lifetime: 28800
 server:
     port: 8080
 mybatis:
     mapper-locations: classpath:mapper/*xml
     type-aliases-package: cn.sjzcjx.sjzcjx_boot.mybatis.entity
+mybatis-plus:
+    configuration:
+        log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
-
+constom:
+    filePath: D:/Code/files/

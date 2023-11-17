@@ -4,9 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -22,7 +20,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ApiModel(value = "Sort对象", description = "")
+@Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class Sort implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,9 +39,9 @@ public class Sort implements Serializable {
     @ApiModelProperty("父级")
     private Integer parent;
 
-    private Integer updatedAt;
+    private LocalDateTime updatedAt;
 
-    private Integer deletedAt;
+    private LocalDateTime deletedAt;
 
     private LocalDateTime createdAt;
 

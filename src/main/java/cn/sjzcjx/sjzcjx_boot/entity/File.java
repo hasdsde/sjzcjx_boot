@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
@@ -23,6 +24,7 @@ import java.time.LocalDateTime;
 @Setter
 @ApiModel(value = "File对象", description = "位于本地的文件")
 @AllArgsConstructor
+@NoArgsConstructor
 public class File implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -30,11 +32,15 @@ public class File implements Serializable {
     @TableId(type = IdType.AUTO)
     private Integer id;
 
-    @ApiModelProperty("类型 1file 2img")
-    private Integer type;
+    private String type;
 
     @ApiModelProperty("链接")
-    private Integer url;
+    private String url;
+
+    private String name;
+
+    private String md5;
+    private String version;
 
     @ApiModelProperty("大小")
     private String size;
