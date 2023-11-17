@@ -10,10 +10,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -94,6 +91,17 @@ public class FileController {
         }
         return Result.OKWithData(url);
     }
+
+    @DeleteMapping("/delete")
+    @ApiOperation("删除")
+    public Result Delete(@RequestParam("id") int id) {
+        cn.sjzcjx.sjzcjx_boot.entity.File file = new cn.sjzcjx.sjzcjx_boot.entity.File();
+        file.setId(id);
+        file.setDeletedAt(LocalDateTime.now());
+        fileService.updateById(file);
+        return Result.OK();
+    }
+
 
     /**
      * @param md5 string

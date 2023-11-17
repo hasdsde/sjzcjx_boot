@@ -57,5 +57,12 @@ public class UrlController {
         return Result.OK();
     }
 
+    @PutMapping("/put")
+    @ApiOperation("更新")
+    public Result Update(@RequestBody Url url) {
+        url.setUpdatedAt(LocalDateTime.now());
+        urlService.updateById(url);
+        return Result.OK();
+    }
 
 }

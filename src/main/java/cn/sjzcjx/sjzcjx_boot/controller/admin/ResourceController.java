@@ -6,10 +6,7 @@ import cn.sjzcjx.sjzcjx_boot.mapper.ResourceMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
@@ -28,10 +25,28 @@ public class ResourceController {
     public ResourceMapper resourceMapper;
 
     @PostMapping("/save")
-    @ApiOperation("新增资源")
+    @ApiOperation("新增")
     public Result Save(@RequestBody Resource resource) {
         resource.setCreatedAt(LocalDateTime.now());
         resourceMapper.insert(resource);
+        return Result.OK();
+    }
+
+    @DeleteMapping("/delete")
+    @ApiOperation("删除")
+    public Result Delete(@RequestParam("id") int id) {
+        Resource resource = new Resource();
+        resource.setId(id);
+        resource.setDeletedAt(LocalDateTime.now());
+        resourceMapper.updateById(resource);
+        return Result.OK();
+    }
+
+    @PutMapping("/update")
+    @ApiOperation("更新")
+    public Result Update(@RequestBody Resource resource) {
+        resource.setUpdatedAt(LocalDateTime.now());
+        resourceMapper.updateById(resource);
         return Result.OK();
     }
 }
