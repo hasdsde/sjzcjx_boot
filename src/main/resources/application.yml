@@ -21,3 +21,4 @@ mybatis-plus:
 
 constom:
     filePath: D:/Code/files/
+    fileUrl: http://127.0.0.1:8080/file/
