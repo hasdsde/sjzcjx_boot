@@ -4,9 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -23,6 +21,8 @@ import java.time.LocalDateTime;
 @Setter
 @ApiModel(value = "Resource对象", description = "")
 @AllArgsConstructor
+@Data
+@NoArgsConstructor
 public class Resource implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,7 +37,7 @@ public class Resource implements Serializable {
     private String otherName;
 
     @ApiModelProperty("图表id")
-    private Integer iconId;
+    private String iconId;
 
     @ApiModelProperty("备注")
     private String comment;
@@ -45,8 +45,8 @@ public class Resource implements Serializable {
     @ApiModelProperty("分类id")
     private Integer sortId;
 
-    @ApiModelProperty("大小")
-    private String size;
+    @ApiModelProperty("上传者")
+    private String uploader;
 
     private LocalDateTime updatedAt;
 

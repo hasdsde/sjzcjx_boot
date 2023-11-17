@@ -29,7 +29,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/puser")
-@Api(tags = "公共-用户")
+@Api(tags = "public-用户")
 @Slf4j
 public class PUserController {
     @Resource

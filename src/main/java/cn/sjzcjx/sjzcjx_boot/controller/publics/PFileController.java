@@ -26,6 +26,8 @@ import java.net.URLEncoder;
 @RequestMapping("/file")
 @Api(tags = "public-文件")
 public class PFileController {
+
+    
     @Value("${constom.filePath}")
     public String fileUploadPath;
     @Value("${constom.fileUrl}")

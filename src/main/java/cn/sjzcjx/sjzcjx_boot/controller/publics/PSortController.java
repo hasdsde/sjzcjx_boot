@@ -26,7 +26,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/psort")
-@Api(tags = "公共-分类")
+@Api(tags = "public-分类")
 @Slf4j
 public class PSortController {
 
