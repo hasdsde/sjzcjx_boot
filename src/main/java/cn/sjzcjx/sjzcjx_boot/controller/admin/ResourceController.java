@@ -2,6 +2,7 @@ package cn.sjzcjx.sjzcjx_boot.controller.admin;
 
 import cn.hutool.http.server.HttpServerRequest;
 import cn.hutool.http.server.HttpServerResponse;
+import cn.sjzcjx.sjzcjx_boot.config.JwtInterceptor;
 import cn.sjzcjx.sjzcjx_boot.config.Result;
 import cn.sjzcjx.sjzcjx_boot.controller.publics.PLogUtil;
 import cn.sjzcjx.sjzcjx_boot.entity.Log;
@@ -42,7 +43,7 @@ public class ResourceController {
         int id = resourceMapper.insert(resource);
 
         //保存一个日志
-        PLogUtil pLogUtil = new PLogUtil(logService, new Log(null, "create_resource", id, JwtUtil.getTokenInfo(request, "userName").toString(), servletRequest.getRemoteAddr(), LocalDateTime.now()));
+        PLogUtil pLogUtil = new PLogUtil(logService, new Log(null, "create_resource", id, JwtUtil.getTokenInfo(JwtInterceptor.GlobalUserToken, "user_name").toString(), servletRequest.getRemoteAddr(), LocalDateTime.now()));
         pLogUtil.run();
 
         return Result.OK();

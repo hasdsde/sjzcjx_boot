@@ -1,10 +1,12 @@
 package cn.sjzcjx.sjzcjx_boot.config;
 
+import cn.sjzcjx.sjzcjx_boot.service.impl.UserServiceImpl;
 import cn.sjzcjx.sjzcjx_boot.utils.JwtUtil;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
@@ -17,6 +19,12 @@ import java.util.Objects;
 
 @Configuration
 public class JwtInterceptor implements HandlerInterceptor {
+
+    @Resource
+    UserServiceImpl userService;
+
+    public static String GlobalUserToken;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader("token");
@@ -29,7 +37,9 @@ public class JwtInterceptor implements HandlerInterceptor {
             throw new AppException(401, "token is null");
         }
 
-        return JwtUtil.checkJwt(token);
+        GlobalUserToken = token;
+
+        return JwtUtil.checkJwt(userService, token);
     }
 
     @Override
