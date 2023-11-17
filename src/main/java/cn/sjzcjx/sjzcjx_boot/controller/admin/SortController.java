@@ -1,9 +1,14 @@
 package cn.sjzcjx.sjzcjx_boot.controller.admin;
 
+import cn.sjzcjx.sjzcjx_boot.config.JwtInterceptor;
 import cn.sjzcjx.sjzcjx_boot.config.Result;
+import cn.sjzcjx.sjzcjx_boot.controller.publics.PLogUtil;
+import cn.sjzcjx.sjzcjx_boot.entity.Log;
 import cn.sjzcjx.sjzcjx_boot.entity.Sort;
 import cn.sjzcjx.sjzcjx_boot.mapper.SortMapper;
+import cn.sjzcjx.sjzcjx_boot.service.impl.LogServiceImpl;
 import cn.sjzcjx.sjzcjx_boot.service.impl.SortServiceImpl;
+import cn.sjzcjx.sjzcjx_boot.utils.JwtUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -11,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletRequest;
 import java.time.LocalDateTime;
 
 /**
@@ -23,7 +29,8 @@ import java.time.LocalDateTime;
 @RequestMapping("/sort")
 @Api(tags = "admin-分类")
 public class SortController {
-
+    @javax.annotation.Resource
+    LogServiceImpl logService;
     @Resource
     public SortMapper sortMapper;
 
@@ -59,11 +66,16 @@ public class SortController {
 
     @DeleteMapping("/delete")
     @ApiOperation("删除")
-    public Result Delete(@RequestParam("id") Integer id) {
+    public Result Delete(@RequestParam("id") Integer id, ServletRequest servletRequest) {
         Sort sort = new Sort();
         sort.setId(id);
         sort.setDeletedAt(LocalDateTime.now());
         sortMapper.updateById(sort);
+
+        //记录删除文件的用户
+        PLogUtil pLogUtil = new PLogUtil(logService, new Log(null, "deleteSort", id, JwtUtil.getTokenInfo(JwtInterceptor.GlobalUserToken, "user_name").toString(), servletRequest.getRemoteAddr(), LocalDateTime.now()));
+        pLogUtil.run();
+
         return Result.OK();
     }
 

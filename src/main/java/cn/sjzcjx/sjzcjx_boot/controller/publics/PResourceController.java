@@ -6,7 +6,6 @@ import cn.sjzcjx.sjzcjx_boot.entity.Url;
 import cn.sjzcjx.sjzcjx_boot.mapper.ResourceMapper;
 import cn.sjzcjx.sjzcjx_boot.mapper.UrlMapper;
 import cn.sjzcjx.sjzcjx_boot.service.impl.ResourceServiceImpl;
-import cn.sjzcjx.sjzcjx_boot.utils.SqlUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -47,10 +46,10 @@ public class PResourceController {
             @RequestParam(value = "sortId", required = false) String sortId
     ) {
         LambdaQueryWrapper<Resource> wrapper = new LambdaQueryWrapper<Resource>()
-                .like(SqlUtil.condition(name), Resource::getName, name)
-                .like(SqlUtil.condition(name), Resource::getComment, name)
+                .like(name == null, Resource::getName, name)
+                .like(name == null, Resource::getComment, name)
                 .isNull(Resource::getDeletedAt)
-                .eq(SqlUtil.condition(sortId), Resource::getSortId, sortId);
+                .eq(sortId == null, Resource::getSortId, sortId);
 
         Page<Resource> page = resourceMapper.selectPage(new Page<>(currentPage, pageSize), wrapper);
         return Result.OKWithPage(page);

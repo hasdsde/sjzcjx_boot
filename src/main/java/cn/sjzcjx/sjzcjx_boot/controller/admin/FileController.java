@@ -2,10 +2,15 @@ package cn.sjzcjx.sjzcjx_boot.controller.admin;
 
 import cn.hutool.crypto.SecureUtil;
 import cn.sjzcjx.sjzcjx_boot.config.AppException;
+import cn.sjzcjx.sjzcjx_boot.config.JwtInterceptor;
 import cn.sjzcjx.sjzcjx_boot.config.Result;
+import cn.sjzcjx.sjzcjx_boot.controller.publics.PLogUtil;
+import cn.sjzcjx.sjzcjx_boot.entity.Log;
 import cn.sjzcjx.sjzcjx_boot.mapper.FileMapper;
 import cn.sjzcjx.sjzcjx_boot.service.impl.FileServiceImpl;
+import cn.sjzcjx.sjzcjx_boot.service.impl.LogServiceImpl;
 import cn.sjzcjx.sjzcjx_boot.utils.FileUtil;
+import cn.sjzcjx.sjzcjx_boot.utils.JwtUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -36,6 +42,9 @@ public class FileController {
     FileMapper fileMapper;
     @Resource
     FileServiceImpl fileService;
+
+    @javax.annotation.Resource
+    LogServiceImpl logService;
 
     @Value("${constom.filePath}")
     public String fileUploadPath;
@@ -94,11 +103,16 @@ public class FileController {
 
     @DeleteMapping("/delete")
     @ApiOperation("删除")
-    public Result Delete(@RequestParam("id") int id) {
+    public Result Delete(@RequestParam("id") int id, ServletRequest servletRequest) {
         cn.sjzcjx.sjzcjx_boot.entity.File file = new cn.sjzcjx.sjzcjx_boot.entity.File();
         file.setId(id);
         file.setDeletedAt(LocalDateTime.now());
         fileService.updateById(file);
+
+        //记录删除的用户
+        PLogUtil pLogUtil = new PLogUtil(logService, new Log(null, "deleteFile", id, JwtUtil.getTokenInfo(JwtInterceptor.GlobalUserToken, "user_name").toString(), servletRequest.getRemoteAddr(), LocalDateTime.now()));
+        pLogUtil.run();
+
         return Result.OK();
     }
 

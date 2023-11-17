@@ -1,10 +1,12 @@
 package cn.sjzcjx.sjzcjx_boot.controller.admin;
 
+import cn.sjzcjx.sjzcjx_boot.config.AppException;
+import cn.sjzcjx.sjzcjx_boot.config.JwtInterceptor;
 import cn.sjzcjx.sjzcjx_boot.config.Result;
 import cn.sjzcjx.sjzcjx_boot.entity.User;
 import cn.sjzcjx.sjzcjx_boot.mapper.UserMapper;
 import cn.sjzcjx.sjzcjx_boot.service.impl.UserServiceImpl;
-import cn.sjzcjx.sjzcjx_boot.utils.SqlUtil;
+import cn.sjzcjx.sjzcjx_boot.utils.JwtUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * <p>
@@ -42,9 +45,14 @@ public class UserController {
             @RequestParam("currentPage") int currentPage,
             @RequestParam("pageSize") int pageSize
     ) {
+
+        if (!Objects.equals(JwtUtil.getTokenInfo(JwtInterceptor.GlobalUserToken, "role"), "admin")) {
+            throw new AppException("permission error");
+        }
+
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<User>()
-                .like(SqlUtil.condition(userId), User::getUserId, userId)
-                .like(SqlUtil.condition(username), User::getUsername, username);
+                .like(userId == null, User::getUserId, userId)
+                .like(username == null, User::getUsername, username);
 
         Page<User> page = userMapper.selectPage(new Page<>(currentPage, pageSize), queryWrapper);
 
@@ -54,6 +62,11 @@ public class UserController {
     @PostMapping("/create")
     @ApiOperation("创建用户")
     public Result Create(@RequestBody User user) {
+
+        if (!Objects.equals(JwtUtil.getTokenInfo(JwtInterceptor.GlobalUserToken, "role"), "admin")) {
+            throw new AppException("permission error");
+        }
+
         user.setCreatedAt(LocalDateTime.now());
         userService.save(user);
         return Result.OK();
@@ -62,6 +75,11 @@ public class UserController {
     @PutMapping("/update")
     @ApiOperation("根据ID修改用户")
     public Result Update(@RequestBody User user) {
+
+        if (!Objects.equals(JwtUtil.getTokenInfo(JwtInterceptor.GlobalUserToken, "role"), "admin")) {
+            throw new AppException("permission error");
+        }
+
         user.setUpdatedAt(LocalDateTime.now());
         userService.updateById(user);
         return Result.OKWithMessage("操作成功");
@@ -70,6 +88,11 @@ public class UserController {
     @DeleteMapping("/delete")
     @ApiOperation("根据ID删除用户")
     public Result Delete(@RequestParam("id") Integer id) {
+
+        if (!Objects.equals(JwtUtil.getTokenInfo(JwtInterceptor.GlobalUserToken, "role"), "admin")) {
+            throw new AppException("permission error");
+        }
+
         User user = new User();
         user.setId(id);
         user.setDeletedAt(LocalDateTime.now());

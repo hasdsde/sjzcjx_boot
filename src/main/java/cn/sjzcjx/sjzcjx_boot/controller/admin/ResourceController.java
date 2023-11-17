@@ -51,11 +51,16 @@ public class ResourceController {
 
     @DeleteMapping("/delete")
     @ApiOperation("删除")
-    public Result Delete(@RequestParam("id") int id) {
+    public Result Delete(@RequestParam("id") int id, ServletRequest servletRequest) {
         Resource resource = new Resource();
         resource.setId(id);
         resource.setDeletedAt(LocalDateTime.now());
         resourceMapper.updateById(resource);
+
+        //记录删除文件的用户
+        PLogUtil pLogUtil = new PLogUtil(logService, new Log(null, "deleteResource", id, JwtUtil.getTokenInfo(JwtInterceptor.GlobalUserToken, "user_name").toString(), servletRequest.getRemoteAddr(), LocalDateTime.now()));
+        pLogUtil.run();
+
         return Result.OK();
     }
 
