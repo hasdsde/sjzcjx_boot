@@ -56,7 +56,7 @@ public class PUserController {
         }
 
         //保存一个日志
-        PLogUtil pLogUtil = new PLogUtil(logService, new Log(null, 1, 1, user.getUserId(), request.getRemoteAddr(), LocalDateTime.now()));
+        PLogUtil pLogUtil = new PLogUtil(logService, new Log(null, "login", 0, user.getUserId(), request.getRemoteAddr(), LocalDateTime.now()));
         pLogUtil.run();
 
         String token = JwtUtil.generateJwt(selectedUser);

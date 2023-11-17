@@ -1,5 +1,6 @@
 package cn.sjzcjx.sjzcjx_boot.utils;
 
+import cn.hutool.http.server.HttpServerRequest;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTUtil;
 import cn.sjzcjx.sjzcjx_boot.config.AppException;
@@ -38,18 +39,32 @@ public class JwtUtil {
         return JWTUtil.createToken(map, user.getPassword().getBytes());
     }
 
+    public static JWT getTokenInfo(HttpServerRequest request, String key) {
+        return JWTUtil.parseToken(request.getHeader(key));
+    }
+
     public static Boolean checkJwt(String token) {
 
         JWT jwt = JWTUtil.parseToken(token);
+
         String userId = jwt.getPayload("user_id").toString();
 
+        if (userId.isEmpty()) {
+            throw new AppException(401, "非法token");
+        }
+
         String expireTime = jwt.getPayload("expire_time").toString();
+
+        if (expireTime.isEmpty()) {
+            throw new AppException(401, "非法token");
+        }
 
         if (Long.parseLong(expireTime) < System.currentTimeMillis()) {
             throw new AppException(401, "登录已过期");
         }
 
         User user = userService.getOne(new QueryWrapper<User>().eq("user_id", userId));
+
         return JWTUtil.verify(token, user.getPassword().getBytes());
     }
 }

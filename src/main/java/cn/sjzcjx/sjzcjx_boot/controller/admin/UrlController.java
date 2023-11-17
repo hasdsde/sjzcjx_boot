@@ -32,8 +32,8 @@ public class UrlController {
     @GetMapping("/list")
     @ApiOperation("获取")
     public Result getUrl(
-            @RequestParam(value = "currentPage") int currentPage,
-            @RequestParam(value = "pageSize") int pageSize
+            @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+            @RequestParam(value = "pageSize", defaultValue = "20") int pageSize
     ) {
         Page<Url> selectedPage = urlMapper.selectPage(new Page<>(currentPage, pageSize), new QueryWrapper<Url>());
         return Result.OKWithPage(selectedPage);

@@ -40,6 +40,7 @@ public class File implements Serializable {
     private String name;
 
     private String md5;
+    
     private String version;
 
     @ApiModelProperty("大小")

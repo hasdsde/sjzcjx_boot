@@ -34,8 +34,8 @@ public class SortController {
     @GetMapping("/list")
     @ApiOperation("列表")
     public Result GetList(
-            @RequestParam(value = "currentPage") int currentPage,
-            @RequestParam(value = "pageSize") int pageSize
+            @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+            @RequestParam(value = "pageSize", defaultValue = "20") int pageSize
     ) {
         Page<Sort> page = sortMapper.selectPage(new Page<>(currentPage, pageSize), new QueryWrapper<Sort>());
         return Result.OKWithPage(page);
