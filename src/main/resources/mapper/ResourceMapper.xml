@@ -2,4 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.sjzcjx.sjzcjx_boot.mapper.ResourceMapper">
 
+    <select id="selectOneWithUrl" resultType="cn.sjzcjx.sjzcjx_boot.entity.dto.ResourceDto">
+        select r.id       as id,
+               name,
+               other_name,
+               icon_id,
+               r.comment  as comment,
+               u.official as official,
+               u.url      as url
+        from resource r
+                 left join sjzcjx.url u on r.id = u.resource_id
+        where r.name like ('%' #{name} '%')
+           or r.other_name like ('%' #{name} '%')
+            and u.official = 1
+        limit 5
+    </select>
 </mapper>

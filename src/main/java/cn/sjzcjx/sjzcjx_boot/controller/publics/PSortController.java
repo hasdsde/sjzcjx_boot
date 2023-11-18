@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +40,7 @@ public class PSortController {
 
     @GetMapping("/list")
     @ApiOperation("获取全部列表附带父级子级")
+    @Cacheable(cacheNames = "psort-list")
     public Result SelectWithArray() {
         List<Sort> parentList = sortMapper.selectList(new QueryWrapper<Sort>().isNull("deleted_at").isNull("parent"));
         List<Sort> childList = sortMapper.selectList(new QueryWrapper<Sort>().isNull("deleted_at").isNotNull("parent"));

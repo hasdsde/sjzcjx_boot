@@ -6,6 +6,7 @@ import cn.sjzcjx.sjzcjx_boot.mapper.UrlMapper;
 import cn.sjzcjx.sjzcjx_boot.service.impl.UrlServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,6 +33,7 @@ public class PUrlController {
     public UrlMapper urlMapper;
 
     @GetMapping("/list")
+    @Cacheable(cacheNames = "purl-list")
     @ApiOperation("根据资源id获取list")
     public Result getList(@RequestParam("id") int id) {
         List<Url> list = urlService.lambdaQuery().eq(Url::getResourceId, id).isNull(Url::getDeletedAt).list();
