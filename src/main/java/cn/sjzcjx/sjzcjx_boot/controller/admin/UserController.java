@@ -51,8 +51,8 @@ public class UserController {
         }
 
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<User>()
-                .like(userId == null, User::getUserId, userId)
-                .like(username == null, User::getUsername, username);
+                .like(userId != null, User::getUserId, userId)
+                .like(username != null, User::getUsername, username);
 
         Page<User> page = userMapper.selectPage(new Page<>(currentPage, pageSize), queryWrapper);
 

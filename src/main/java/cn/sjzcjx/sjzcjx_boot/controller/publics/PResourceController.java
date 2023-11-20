@@ -49,10 +49,10 @@ public class PResourceController {
             @RequestParam(value = "sortId", required = false) String sortId
     ) {
         LambdaQueryWrapper<Resource> wrapper = new LambdaQueryWrapper<Resource>()
-                .like(name == null, Resource::getName, name)
-                .like(name == null, Resource::getComment, name)
+                .like(name != null, Resource::getName, name)
+                .or().like(name != null, Resource::getOtherName, name)
                 .isNull(Resource::getDeletedAt)
-                .eq(sortId == null, Resource::getSortId, sortId);
+                .eq(sortId != null, Resource::getSortId, sortId);
 
         Page<Resource> page = resourceMapper.selectPage(new Page<>(currentPage, pageSize), wrapper);
         return Result.OKWithPage(page);
